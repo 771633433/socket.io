@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>客户端socket聊天室</title>
+</head>
+<!--  引入vue	-->
+<!-- <script src="https://unpkg.com/vue"></script> -->
+
+<body>
+	<!--  主容器,设置居中	-->
+	<div class="content">
+		<!--  这个class为main的用来存放聊天信息	-->
+		<div class="main">
+			<p style="height: 15px;"></p>
+		</div>
+		<form id="message-form">
+			<input id="message" rows='4' cols='30' value=""  autocomplete="off" placeholder="输入想要发送的消息.."></input>	
+			<button>点击发送</button>
+		</form>
+	</div>
+
+		<script src="http://code.jquery.com/jquery-3.2.1.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+			 var socket=io.connect('http://127.0.0.1:3000')
+			 var message=document.getElementById('message')
+			//写个button 点击发送
+
+			$('button').click(()=>{
+				//console.log($("#message")[0].value)
+				// 判断一下内容是否为空,若用户输入了空的内容,则不能发送！
+				if($("#message")[0].value==null || $("#message")[0].value==''){
+					console.log('内容为空！ 请重新输入');
+				}else{
+					socket.emit('message',{text:message.value})
+					//console.log(message.value);
+					$('.main').append('<p class="p1">'+'&nbsp;'+'&nbsp;'+message.value+'&nbsp;'+'&nbsp;'+'</p>'+'<br/>'+'<br/>'+'<p style="height: 16px;">'+'</p>');
+					// 点击发送后,将input框里面的内容清空！
+					$("#message")[0].value='';
+					return false
+				}	
+			})
+			socket.on('push message',(data)=>{
+				console.log(data.text)
+				$('.main').append('<p class="p2">'+'&nbsp;'+'&nbsp;'+data.text+'&nbsp;'+'&nbsp;'+'</p>'+'<br/>'+'<br/>'+'<p style="height: 16px;">'+'</p>')
+			})
+		</script>
+		
+<style type="text/css">
+*{
+	padding: 0;
+	margin: 0 
+}
+.main{
+	width: 800px;
+	height: 400px;
+	margin: 20px auto;
+	overflow: auto;
+	border: 1px solid gray;
+	background: #eee;
+}
+
+.content{
+	width: 800px;
+	height: 600px;
+	/*border: 1px solid red;*/
+	margin: 0 auto;
+}
+
+#message-form{
+	float: right;
+}
+
+.p1{	
+	margin-right: 10px;
+	line-height: 40px;
+	display: block;
+	float: right;
+	text-align: right;
+	border-radius: 2px;
+	background: #b2e281;
+}
+.p2{
+	margin-left: 10px;
+	line-height: 40px;
+	display: block;
+	float: left;
+	text-align: left;
+	border-radius: 2px;
+	background: white;
+}
+</style>
+</body>
+</html>
