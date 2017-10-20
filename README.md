@@ -6,18 +6,13 @@
 npm install
 
 # serve with hot reload at localhost:8080
-npm run dev
+node app
 
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
 
 
 
-可以看到已经可以自己跟自己聊天了，仅限于本地聊天。
+浏览器打开两个 127.0.0.1:3000,可以看到已经可以自己跟自己聊天了，仅限于本地聊天。
 
 
 
